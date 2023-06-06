@@ -47,4 +47,13 @@
         android:drawablePadding="4dp"
         android:text="@string/next_button"
         android:layout_gravity="bottom|end"/>
+
+    <Button
+        android:id="@+id/previous_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/arrow_left"
+        android:drawablePadding="4dp"
+        android:text="@string/previous_button"
+        android:layout_gravity="bottom|start"/>
 </FrameLayout>
