@@ -61,11 +61,13 @@ class MainActivity : AppCompatActivity() {
         nextButton.setOnClickListener { view: View ->
             quizViewModel.moveToNext()
             updateQuestion()
+            toggleAnswerButtons()
         }
 
         previousButton.setOnClickListener { view: View ->
             quizViewModel.moveToPrevious()
             updateQuestion()
+            toggleAnswerButtons()
         }
 
         cheatButton.setOnClickListener {
@@ -124,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         if (requestCode == REQUEST_CODE_CHEAT) {
-            quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN,false) ?: false
+            quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
         }
     }
 
@@ -147,5 +149,18 @@ class MainActivity : AppCompatActivity() {
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
+
+        quizViewModel.updateAnswerState()
+        toggleAnswerButtons()
+    }
+
+    private fun toggleAnswerButtons() {
+        if (quizViewModel.currentQuestionAnswered) {
+            trueButton.isEnabled = false
+            falseButton.isEnabled = false
+        } else {
+            trueButton.isEnabled = true
+            falseButton.isEnabled = true
+        }
     }
 }
