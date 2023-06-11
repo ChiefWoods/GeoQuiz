@@ -47,4 +47,22 @@ class QuizViewModel : ViewModel() {
     fun incrementScore() {
         score++
     }
+
+    fun resetScore() {
+        score = 0
+    }
+
+    fun resetAnswerState() {
+        for (Question in questionBank) {
+            Question.isQuestionAnswered = false
+        }
+    }
+
+    fun resetCurrentIndex() {
+        currentIndex = 0
+    }
+
+    fun resetIsCheater() {
+        isCheater = false
+    }
 }

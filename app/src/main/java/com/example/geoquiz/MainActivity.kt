@@ -79,6 +79,21 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_CHEAT)
         }
 
+        resetButton.setOnClickListener {
+            quizViewModel.resetScore()
+            quizViewModel.resetAnswerState()
+            quizViewModel.resetIsCheater()
+            quizViewModel.resetCurrentIndex()
+            updateQuestion()
+            changeButtonState()
+
+            Toast.makeText(
+                this,
+                "Quiz successfully reset",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         updateQuestion()
 
     }
