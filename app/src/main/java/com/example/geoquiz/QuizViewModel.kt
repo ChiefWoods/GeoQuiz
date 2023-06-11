@@ -16,6 +16,7 @@ class QuizViewModel : ViewModel() {
 
     var currentIndex = 0
     var isCheater = false
+    var score = 0
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
@@ -37,5 +38,13 @@ class QuizViewModel : ViewModel() {
 
     fun updateAnswerState() {
         questionBank[currentIndex].isQuestionAnswered = true
+    }
+
+    fun allQuestionsAnswered(): Boolean {
+        return questionBank.all { it.isQuestionAnswered }
+    }
+
+    fun incrementScore() {
+        score++
     }
 }

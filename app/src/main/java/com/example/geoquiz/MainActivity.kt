@@ -150,8 +150,13 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
+        if (userAnswer == correctAnswer) {
+            quizViewModel.incrementScore()
+        }
+
         quizViewModel.updateAnswerState()
         toggleAnswerButtons()
+        displayScoreToast()
     }
 
     private fun toggleAnswerButtons() {
@@ -161,6 +166,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             trueButton.isEnabled = true
             falseButton.isEnabled = true
+        }
+    }
+
+    private fun displayScoreToast() {
+        if (quizViewModel.allQuestionsAnswered()) {
+            val scorePercentage = (quizViewModel.score.toDouble() / 6.toDouble() * 100).toInt()
+            val scoreMessage = "Quiz completed! You scored $scorePercentage%"
+
+            Toast.makeText(
+                this,
+                scoreMessage,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
