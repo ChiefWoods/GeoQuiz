@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: Button
     private lateinit var previousButton: Button
     private lateinit var cheatButton: Button
+    private lateinit var resetButton: Button
     private lateinit var questionTextView: TextView
 
     private val quizViewModel: QuizViewModel by lazy {
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         previousButton = findViewById(R.id.previous_button)
         cheatButton = findViewById(R.id.cheat_button)
+        resetButton = findViewById(R.id.reset_button)
 
         questionTextView = findViewById(R.id.question_text_view)
 
