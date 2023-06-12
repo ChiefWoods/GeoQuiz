@@ -63,6 +63,13 @@
             android:layout_marginTop="24dp"
             android:text="@string/cheat_button" />
 
+        <TextView
+            android:id="@+id/cheats_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

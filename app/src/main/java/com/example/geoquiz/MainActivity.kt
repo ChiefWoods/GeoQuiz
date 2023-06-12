@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 
 private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
+private const val KEY_CHEAT_TOKENS = "cheat_tokens"
 private const val REQUEST_CODE_CHEAT = 0
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resetButton: Button
     private lateinit var questionTextView: TextView
     private lateinit var questionStatus: TextView
+    private lateinit var cheatsLeft: TextView
+
+    var cheatsTokens = 3
 
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this).get(QuizViewModel::class.java)
@@ -36,11 +40,13 @@ class MainActivity : AppCompatActivity() {
 
         val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
         val isCheater = savedInstanceState?.getBoolean(KEY_IS_CHEATER, false) ?: false
+        val cheatTokens = savedInstanceState?.getInt(KEY_CHEAT_TOKENS, 3) ?: 3
 
         Log.i("TEST", savedInstanceState?.getBoolean(KEY_IS_CHEATER).toString())
 
         quizViewModel.isCheater = isCheater
         quizViewModel.currentIndex = currentIndex
+        this.cheatsTokens = cheatTokens
 
         Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
 
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         resetButton = findViewById(R.id.reset_button)
         questionTextView = findViewById(R.id.question_text_view)
         questionStatus = findViewById(R.id.question_status)
+        cheatsLeft = findViewById(R.id.cheats_left)
 
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
@@ -81,12 +88,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         resetButton.setOnClickListener {
+            cheatsTokens = 3
+            cheatButton.isEnabled = true
             quizViewModel.resetScore()
             quizViewModel.resetAnswerState()
             quizViewModel.resetIsCheater()
             quizViewModel.resetCurrentIndex()
             updateQuestion()
             changeButtonState()
+            updateCheatsLeft()
 
             Toast.makeText(
                 this,
@@ -96,12 +106,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
+        updateCheatsLeft()
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         Log.i(TAG, "onSaveInstanceState")
         savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
+        savedInstanceState.putBoolean(KEY_IS_CHEATER, quizViewModel.isCheater)
+        savedInstanceState.putInt(KEY_CHEAT_TOKENS, cheatsTokens)
     }
 
     override fun onStart() {
@@ -145,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_CHEAT) {
             quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
         }
+        disableCheatButton()
     }
 
     private fun updateQuestion() {
@@ -173,9 +187,16 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.incrementScore()
         }
 
+        if (quizViewModel.isCheater) {
+            cheatsTokens--
+        }
+
         quizViewModel.updateAnswerState()
+        quizViewModel.resetIsCheater()
         toggleAnswerButtons()
         displayScoreToast()
+        updateCheatsLeft()
+        disableCheatButton()
     }
 
     private fun toggleAnswerButtons() {
@@ -198,6 +219,16 @@ class MainActivity : AppCompatActivity() {
                 scoreMessage,
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    private fun updateCheatsLeft() {
+        cheatsLeft.text = "Cheats Left : " + cheatsTokens.toString()
+    }
+
+    private fun disableCheatButton() {
+        if (cheatsTokens < 1) {
+            cheatButton.isEnabled = false
         }
     }
 }

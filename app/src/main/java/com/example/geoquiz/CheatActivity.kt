@@ -18,10 +18,9 @@ private const val EXTRA_ANSWER_IS_TRUE = "com.bignerdranch.android.geoquiz.answe
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown"
 
 class CheatActivity : AppCompatActivity() {
-    private var answerIsTrue = false;
+    private var answerIsTrue = false
     private lateinit var answerTextView: TextView
     private lateinit var showAnswerButton: Button
-
 
     private val cheatViewModel: CheatViewModel by lazy {
         ViewModelProvider(this).get(CheatViewModel::class.java)
@@ -67,7 +66,7 @@ class CheatActivity : AppCompatActivity() {
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
-        cheatViewModel.isCheater = isAnswerShown;
+        cheatViewModel.isCheater = isAnswerShown
         val data = Intent().apply {
             putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown)
         }
