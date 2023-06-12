@@ -46,6 +46,10 @@ class QuizViewModel : ViewModel() {
         return questionBank.all { it.isQuestionAnswered }
     }
 
+    fun countQuestionsAnswered(): Int {
+        return questionBank.count { it.isQuestionAnswered }
+    }
+
     fun incrementScore() {
         score++
     }

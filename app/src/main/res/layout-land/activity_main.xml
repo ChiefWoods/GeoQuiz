@@ -20,13 +20,29 @@
         android:padding="24dp"
         tools:text="@string/question_australia" />
 
-    <TextView
-        android:id="@+id/question_status"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|right"
-        android:layout_margin="10dp"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:layout_gravity="end"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/result_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:text="@string/result_button" />
+
+        <TextView
+            android:id="@+id/question_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

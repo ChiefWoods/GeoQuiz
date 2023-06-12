@@ -15,6 +15,7 @@ private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
 private const val KEY_CHEAT_TOKENS = "cheat_tokens"
 private const val REQUEST_CODE_CHEAT = 0
+private const val REQUEST_CODE_RESULT = 0
 
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
@@ -26,13 +27,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var questionTextView: TextView
     private lateinit var questionStatus: TextView
     private lateinit var cheatsLeft: TextView
+    private lateinit var resultButton: Button
 
     var cheatsTokens = 3
 
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this).get(QuizViewModel::class.java)
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         previousButton = findViewById(R.id.previous_button)
         cheatButton = findViewById(R.id.cheat_button)
         resetButton = findViewById(R.id.reset_button)
+        resultButton = findViewById(R.id.result_button)
         questionTextView = findViewById(R.id.question_text_view)
         questionStatus = findViewById(R.id.question_status)
         cheatsLeft = findViewById(R.id.cheats_left)
@@ -95,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.resetIsCheater()
             quizViewModel.resetCurrentIndex()
             updateQuestion()
-            changeButtonState()
+            toggleAnswerButtons()
             updateCheatsLeft()
 
             Toast.makeText(
@@ -103,6 +105,14 @@ class MainActivity : AppCompatActivity() {
                 "Quiz successfully reset",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+
+        resultButton.setOnClickListener {
+            val totalQuestionsAnswered = quizViewModel.countQuestionsAnswered()
+            val totalScore = calculateScore()
+            val cheatAttempts = 3 - this.cheatsTokens
+            val intent = ResultActivity.newIntent(this@MainActivity, totalQuestionsAnswered, totalScore, cheatAttempts)
+            startActivityForResult(intent, REQUEST_CODE_RESULT)
         }
 
         updateQuestion()
@@ -209,10 +219,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun calculateScore(): Int {
+        return (quizViewModel.score.toDouble() / 6.toDouble() * 100).toInt()
+    }
+
     private fun displayScoreToast() {
         if (quizViewModel.allQuestionsAnswered()) {
-            val scorePercentage = (quizViewModel.score.toDouble() / 6.toDouble() * 100).toInt()
-            val scoreMessage = "Quiz completed! You scored $scorePercentage%"
+            val scoreMessage = "Quiz completed! You scored ${calculateScore()}%"
 
             Toast.makeText(
                 this,
