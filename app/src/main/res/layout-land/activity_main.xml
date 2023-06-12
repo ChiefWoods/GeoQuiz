@@ -20,22 +20,32 @@
         android:padding="24dp"
         tools:text="@string/question_australia" />
 
+    <TextView
+        android:id="@+id/question_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_margin="10dp"
+        android:textSize="16sp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal|center_vertical">
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/true_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:text="@string/true_button" />
 
         <Button
             android:id="@+id/false_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="@string/false_button" />
     </LinearLayout>
 

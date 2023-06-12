@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cheatButton: Button
     private lateinit var resetButton: Button
     private lateinit var questionTextView: TextView
+    private lateinit var questionStatus: TextView
 
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this).get(QuizViewModel::class.java)
@@ -49,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         previousButton = findViewById(R.id.previous_button)
         cheatButton = findViewById(R.id.cheat_button)
         resetButton = findViewById(R.id.reset_button)
-
         questionTextView = findViewById(R.id.question_text_view)
+        questionStatus = findViewById(R.id.question_status)
 
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
@@ -95,7 +96,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
-
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -150,6 +150,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
+
+        questionStatus.text = "Question " + (quizViewModel.currentIndex + 1).toString() + " of " + quizViewModel.questionBankSize.toString()
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
